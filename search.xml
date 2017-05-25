@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/posts/undefined/</url>
+      <content type="html"><![CDATA[<p><code>Welcome</code> to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">wrapImageWithFancyBox: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  $(<span class="string">'.content img'</span>)</div><div class="line">    .not(<span class="string">'[hidden]'</span>)</div><div class="line">    .not(<span class="string">'.group-picture img, .post-gallery img'</span>)</div><div class="line">    .each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="keyword">var</span> $image = $(<span class="keyword">this</span>);</div><div class="line">      <span class="keyword">var</span> imageTitle = $image.attr(<span class="string">'title'</span>);</div><div class="line">      <span class="keyword">var</span> $imageWrapLink = $image.parent(<span class="string">'a'</span>);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> ($imageWrapLink.size() &lt; <span class="number">1</span>) &#123;</div><div class="line">        $imageWrapLink = $image.wrap(<span class="string">'&lt;a href="'</span> + <span class="keyword">this</span>.getAttribute(<span class="string">'src'</span>) + <span class="string">'"&gt;&lt;/a&gt;'</span>).parent(<span class="string">'a'</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      $imageWrapLink.addClass(<span class="string">'fancybox fancybox.image'</span>);</div><div class="line">      $imageWrapLink.attr(<span class="string">'rel'</span>, <span class="string">'group'</span>);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (imageTitle) &#123;</div><div class="line">        $imageWrapLink.append(<span class="string">'&lt;p class="image-caption"&gt;'</span> + imageTitle + <span class="string">'&lt;/p&gt;'</span>);</div><div class="line"></div><div class="line">        <span class="comment">//make sure img title tag will show correctly in fancybox</span></div><div class="line">        $imageWrapLink.attr(<span class="string">'title'</span>, imageTitle);</div><div class="line">      &#125;</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">  $(<span class="string">'.fancybox'</span>).fancybox(&#123;</div><div class="line">    <span class="attr">helpers</span>: &#123;</div><div class="line">      <span class="attr">overlay</span>: &#123;</div><div class="line">        <span class="attr">locked</span>: <span class="literal">false</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;,</div></pre></td></tr></table></figure>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[12345]]></title>
+      <url>/posts/undefined/</url>
+      <content type="html"><![CDATA[<blockquote class="blockquote-center"><p>By霞</p></blockquote><p>就像阴雨绵绵之后你看到窗帘中挤进了一束阳光<br>就像下了巴士后不曾相识的陌生人给你撑起一把伞<br>就像室友会记得不断提醒我要交的作业不嫌我麻烦<br>就像在盒子里发现以前未曾发现的留言我想你每天都快乐<br>就像天气很冷的时候有人把你的手放进了口袋<br>就像孤寂的时候耳畔绕起之谦的歌<br><a id="more"></a><br><img src="http://oegv7uazl.bkt.clouddn.com/%E9%A3%8E%E9%93%83.jpg" class="full-image"><br>放晴了两天，雨还是会继续下。就像很多未处理的事情不会因为你的拖延就解决；面前的坎不会因为你今天没有勇气跨越明天就有人为你填成平地。然而，适当的犹豫不决或许可以告诉你这个坎值不值得你费尽心力去跨越，这个问题值不值得劳心劳力寝食难安。<br><img src="http://oqhtscus0.bkt.clouddn.com/c9f65375830453cec88688f3d9149306.png" alt=""></p><pre><code>或许，很多东西，压根不重要，踌躇挣扎是在自我麻醉自我感动。
+</code></pre><p>贝贝是舞房的老板娘，是个像其他女孩子一样爱美怕胖有多多烦恼的女生。但是我从未见她滔滔不绝抱怨的模样，每个人的烦恼说起来都像古代女人的裹脚布又臭又长，其实你说给别人听，别人的感觉或许像把裹脚布缠到他脸上一样反感。贝贝很累不想练舞，但放起音乐，从慵懒到投入，不知不觉一切又明朗了。</p><p>去看陈建斌导演的《一个勺子》，在最后影院公映的版本里，王学兵（因吸毒一事）几乎只是靠声音和后脑勺在表演。甚是觉得有些可笑，因为一个人的行为污点而否定、封杀他的作品，甚至诛连到跟他有关的成百上千人的艰辛付出，这真的是必要的吗？广电要惩戒这些丑闻明星没有错，我们可以不接受其为人，但是为何要剥夺我们欣赏其艺术的权利？人啊太复杂，看不见的东西太多，谁能知道一派君子背后的苟且之事。人是人，作品是作品啊！</p><p>看了点《方与圆》对于交友又有些新的想法。天天除了掐架斗嘴就没话可说的算朋友吗？会拥抱亲吻时常陪伴的就能算恋人吗？感觉很好但又客客气气的能算是好朋友吗？圆的人真的比方的人能交到更多朋友？那真的就幸福吗？</p>]]></content>
+      
+        <categories>
+            
+            <category> life </category>
+            
+            <category> life2 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 生活 </tag>
+            
+            <tag> 朋友 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>
