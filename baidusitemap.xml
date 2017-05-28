@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://muyunyun.cn/posts/4a17b156/</loc>
+    <lastmod>2017-05-25T17:49:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2017-05-23T13:55:35.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://muyunyun.cn/posts/cbf53a1c/</loc>
+    <lastmod>2017-05-25T17:49:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>12345</title>
+        <pubTime>2016-10-02T12:45:53.000Z</pubTime>
+        
+        <tag>生活</tag>
+         
+        <tag>朋友</tag>
+         
+         
+           
+             
+              <breadCrumb title="life" url="http://muyunyun.cn/categories/life/"/>
+          
+             
+              <breadCrumb title="life2" url="http://muyunyun.cn/categories/life/life2/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+</urlset>
