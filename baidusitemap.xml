@@ -4,39 +4,21 @@
 
     
   <url>
-    <loc>http://muyunyun.cn/posts/4a17b156/</loc>
-    <lastmod>2017-05-25T17:49:10.000Z</lastmod>
+    <loc>http://muyunyun.cn/posts/f55182c5/</loc>
+    <lastmod>2017-05-29T22:03:41.000Z</lastmod>
     <data>
         <display>
-        <title>Hello World</title>
-        <pubTime>2017-05-23T13:55:35.000Z</pubTime>
+        <title>hexo摸爬滚打之进阶教程</title>
+        <pubTime>2017-05-29T14:01:26.000Z</pubTime>
         
+        <tag>hexo</tag>
          
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://muyunyun.cn/posts/cbf53a1c/</loc>
-    <lastmod>2017-05-25T17:49:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>12345</title>
-        <pubTime>2016-10-02T12:45:53.000Z</pubTime>
-        
-        <tag>生活</tag>
-         
-        <tag>朋友</tag>
+        <tag>blog</tag>
          
          
            
              
-              <breadCrumb title="life" url="http://muyunyun.cn/categories/life/"/>
-          
-             
-              <breadCrumb title="life2" url="http://muyunyun.cn/categories/life/life2/"/>
+              <breadCrumb title="git" url="http://muyunyun.cn/categories/git/"/>
           
         </display>
     </data>
