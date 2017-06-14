@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://muyunyun.cn/posts/4a895cbd/</loc>
-    <lastmod>2017-06-06T14:46:26.000Z</lastmod>
+    <lastmod>2017-06-14T18:18:54.000Z</lastmod>
     <data>
         <display>
         <title>读书笔记-你不知道的JavaScript(上)</title>
@@ -26,8 +26,30 @@
 
     
   <url>
+    <loc>http://muyunyun.cn/posts/9bfbdbf4/</loc>
+    <lastmod>2017-06-14T18:18:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>使用React全家桶搭建一个后台管理系统</title>
+        <pubTime>2017-06-14T17:16:07.000Z</pubTime>
+        
+        <tag>React</tag>
+         
+        <tag>Redux</tag>
+         
+         
+           
+             
+              <breadCrumb title="React" url="http://muyunyun.cn/categories/React/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://muyunyun.cn/posts/f55182c5/</loc>
-    <lastmod>2017-06-04T13:24:50.000Z</lastmod>
+    <lastmod>2017-06-13T17:55:33.000Z</lastmod>
     <data>
         <display>
         <title>hexo摸爬滚打之进阶教程</title>
