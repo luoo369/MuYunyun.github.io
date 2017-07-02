@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://muyunyun.cn/posts/66a54fc2/</loc>
+    <lastmod>2017-07-02T13:58:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>从 JavaScript 到 TypeScript</title>
+        <pubTime>2017-07-02T05:40:33.000Z</pubTime>
+        
+        <tag>JavaScript</tag>
+         
+        <tag>TypeScript</tag>
+         
+         
+           
+             
+              <breadCrumb title="TypeScript" url="http://muyunyun.cn/categories/TypeScript/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://muyunyun.cn/posts/2d678a6/</loc>
-    <lastmod>2017-07-01T08:12:31.000Z</lastmod>
+    <lastmod>2017-07-02T05:43:37.000Z</lastmod>
     <data>
         <display>
         <title>React 在服务端渲染的实现</title>
@@ -55,9 +77,9 @@
         <title>读书笔记-你不知道的 JavaScript (上)</title>
         <pubTime>2017-06-06T14:15:01.000Z</pubTime>
         
-        <tag>读书笔记</tag>
-         
         <tag>JavaScript</tag>
+         
+        <tag>读书笔记</tag>
          
          
            
