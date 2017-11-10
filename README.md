@@ -1,28 +1,18 @@
-### 牧云云个人网站
+### [牧之](http://muyunyun.cn)
 
-博客地址: <http://muyunyun.cn>.
+> **博客签名：若批评无自由，则赞美无意义。**
 
-### Makefile使用说明
+> **博客目的: 行远自迩，登高自卑，与君共勉。文以载道，歌以咏志。**
 
-```
-====================A common Makefile for blog system=======================
-Copyright (C) 2015 barret.china@gmail.com
-The following targets are support:
+> **[旧博客](http://www.cnblogs.com/MuYunyun/)**
 
- i --init             - init, run npm install
- r --run              - start local serve at http://0.0.0.0:4000
- d --deploy           - deploy project to gitcafe & github
- b --backup (P=)      - backup dates, push to git
-                         make backup P=1; P->PUSH
- h --help             - show help info
- n --new (N=|P=)      - init new post
-                         make new N=postname; N->NEW
-                         make new N=postname P=1; P->PUBLISH
+## 2017
 
-To make a target, do make [target], short for make [t]
-============================== Version0.1 ==================================
-```
-
-### 博客说明
-
-由于 `github` 的访问速度在国内比较慢，所以网站同时部署在 `coding` 上
+* [走近 Python (类比 JS)](http://muyunyun.cn/posts/a9d08041/)
+* [Node.js 异步异闻录](http://muyunyun.cn/posts/7b9fdc87/)
+* [用 Node.js 把玩一番 Alfred Workflow](http://muyunyun.cn/posts/4c23be51/)
+* [从 JavaScript 到 TypeScript](http://muyunyun.cn/posts/66a54fc2/)
+* [React 在服务端渲染的实现](http://muyunyun.cn/posts/2d678a6/)
+* [使用 React 全家桶搭建一个后台管理系统](http://muyunyun.cn/posts/9bfbdbf4/)
+* [读书笔记-你不知道的 JavaScript (上)](http://muyunyun.cn/posts/4a895cbd/)
+* [hexo 摸爬滚打之进阶教程](http://muyunyun.cn/posts/f55182c5/)
