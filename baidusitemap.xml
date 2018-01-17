@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://muyunyun.cn/posts/384a97b3/</loc>
-    <lastmod>2018-01-17T15:13:13.000Z</lastmod>
+    <lastmod>2018-01-17T15:31:39.000Z</lastmod>
     <data>
         <display>
-        <title>实现一个简单的 MVVM 框架</title>
+        <title>MVVM 框架解析之双向绑定</title>
         <pubTime>2018-01-16T09:33:17.000Z</pubTime>
         
         <tag>Mvvm</tag>
