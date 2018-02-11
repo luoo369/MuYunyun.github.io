@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://muyunyun.cn/posts/f0f11de9/</loc>
+    <lastmod>2018-02-11T07:13:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>探索从 MVC 到 MVVM + Flux 架构模式的转变</title>
+        <pubTime>2018-02-10T02:12:32.000Z</pubTime>
+        
+        <tag>框架</tag>
+         
+        <tag>状态管理</tag>
+         
+        <tag>react</tag>
+         
+         
+           
+             
+              <breadCrumb title="框架" url="http://muyunyun.cn/categories/%E6%A1%86%E6%9E%B6/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://muyunyun.cn/posts/e29f2c47/</loc>
     <lastmod>2018-02-04T15:59:22.000Z</lastmod>
     <data>
@@ -247,9 +271,9 @@
         <title>读书笔记-你不知道的 JavaScript (上)</title>
         <pubTime>2017-06-06T14:15:01.000Z</pubTime>
         
-        <tag>读书笔记</tag>
-         
         <tag>JavaScript</tag>
+         
+        <tag>读书笔记</tag>
          
          
            
