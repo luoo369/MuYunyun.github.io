@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://muyunyun.cn/posts/b7045d95/</loc>
+    <lastmod>2018-03-19T03:26:43.000Z</lastmod>
+    <data>
+        <display>
+        <title>JS 装饰器解析</title>
+        <pubTime>2018-03-19T02:01:10.000Z</pubTime>
+        
+        <tag>decorators</tag>
+         
+        <tag>ES7</tag>
+         
+         
+           
+             
+              <breadCrumb title="decorators" url="http://muyunyun.cn/categories/decorators/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://muyunyun.cn/posts/7f9a92dc/</loc>
     <lastmod>2018-02-28T16:17:13.000Z</lastmod>
     <data>
@@ -123,9 +145,9 @@
         
         <tag>JavaScript</tag>
          
-        <tag>轮子</tag>
-         
         <tag>瀑布流</tag>
+         
+        <tag>轮子</tag>
          
          
            
