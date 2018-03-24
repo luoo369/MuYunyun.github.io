@@ -3,6 +3,28 @@
 
 
     
+    
+    
+  <url>
+    <loc>http://muyunyun.cn/posts/384a97b3/</loc>
+    <lastmod>2018-03-24T06:08:37.000Z</lastmod>
+    <data>
+        <display>
+        <title>MVVM 框架解析之双向绑定</title>
+        <pubTime>2018-01-16T09:33:17.000Z</pubTime>
+        
+        <tag>Mvvm</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mvvm" url="http://muyunyun.cn/categories/Mvvm/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
   <url>
     <loc>http://muyunyun.cn/posts/b7045d95/</loc>
     <lastmod>2018-03-19T03:26:43.000Z</lastmod>
@@ -89,26 +111,6 @@
            
              
               <breadCrumb title="跨域" url="http://muyunyun.cn/categories/%E8%B7%A8%E5%9F%9F/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://muyunyun.cn/posts/384a97b3/</loc>
-    <lastmod>2018-02-04T06:31:23.693Z</lastmod>
-    <data>
-        <display>
-        <title>MVVM 框架解析之双向绑定</title>
-        <pubTime>2018-01-16T09:33:17.000Z</pubTime>
-        
-        <tag>Mvvm</tag>
-         
-         
-           
-             
-              <breadCrumb title="Mvvm" url="http://muyunyun.cn/categories/Mvvm/"/>
           
         </display>
     </data>
@@ -352,7 +354,5 @@
     </data>
     </url>
 
-    
-    
     
 </urlset>
