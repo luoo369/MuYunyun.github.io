@@ -1,0 +1,323 @@
+<!doctype html><html class="theme-next mist" lang="zh-Hans"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script><link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet"><script></script><style>.pace .pace-progress{background:#1e92fb;height:3px}.pace .pace-progress-inner{box-shadow:0 0 10px #1e92fb,0 0 5px #1e92fb}.pace .pace-activity{border-top-color:#1e92fb;border-left-color:#1e92fb}</style><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="google-site-verification" content="7fyp1NuvXSRLM9KpMq5_YNE_0zFZkPnuV-SbVVFgWbI"><link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="//fonts.googleapis.com/css?family=Monda, Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css"><link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css"><meta name="keywords" content="webpack,"><link rel="alternate" href="/atom.xml" title="牧之" type="application/atom+xml"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1"><meta name="description" content="webpack 可谓是让人欣喜又让人忧，功能强大但需要一定的学习成本。在探寻 webpack 插件机制前，首先需要了解一件有意思的事情，webpack 插件机制是整个 webpack 工具的骨架，而 webpack 本身也是利用这套插件机制构建出来的。因此在深入认识 webpack 插件机制后，再来进行项目的相关优化，想必会大有裨益。webpack 插件先来瞅瞅 webpack 插件在项目中的运用"><meta name="keywords" content="webpack"><meta property="og:type" content="article"><meta property="og:title" content="探寻 webpack 插件机制"><meta property="og:url" content="http://muyunyun.cn/posts/8a8c13a7/index.html"><meta property="og:site_name" content="牧之"><meta property="og:description" content="webpack 可谓是让人欣喜又让人忧，功能强大但需要一定的学习成本。在探寻 webpack 插件机制前，首先需要了解一件有意思的事情，webpack 插件机制是整个 webpack 工具的骨架，而 webpack 本身也是利用这套插件机制构建出来的。因此在深入认识 webpack 插件机制后，再来进行项目的相关优化，想必会大有裨益。webpack 插件先来瞅瞅 webpack 插件在项目中的运用"><meta property="og:locale" content="zh-Hans"><meta property="og:image" content="http://oqhtscus0.bkt.clouddn.com/329ec042a73aecd0a1947bdcc1f0dcb4.jpg-400"><meta property="og:updated_time" content="2018-04-18T08:22:17.000Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="探寻 webpack 插件机制"><meta name="twitter:description" content="webpack 可谓是让人欣喜又让人忧，功能强大但需要一定的学习成本。在探寻 webpack 插件机制前，首先需要了解一件有意思的事情，webpack 插件机制是整个 webpack 工具的骨架，而 webpack 本身也是利用这套插件机制构建出来的。因此在深入认识 webpack 插件机制后，再来进行项目的相关优化，想必会大有裨益。webpack 插件先来瞅瞅 webpack 插件在项目中的运用"><meta name="twitter:image" content="http://oqhtscus0.bkt.clouddn.com/329ec042a73aecd0a1947bdcc1f0dcb4.jpg-400"><script type="text/javascript" id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",sidebar:{position:"left",display:"post",offset:12,offset_float:0,b2t:!1,scrollpercent:!1},fancybox:!0,motion:!1,duoshuo:{userId:"0",author:"博主"},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><link rel="canonical" href="http://muyunyun.cn/posts/8a8c13a7/"><meta name="baidu-site-verification" content="9thMbiI6P9"><meta name="google-site-verification" content="7fyp1NuvXSRLM9KpMq5_YNE_0zFZkPnuV-SbVVFgWbI"><title>探寻 webpack 插件机制 | 牧之</title><style>.forkme{display:none}@media (min-width:768px){.forkme{display:inline}}</style></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><script type="text/javascript">var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?2a1ef240385d81d3b70743247744b374";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><div class="forkme"><a href="https://github.com/MuYunyun/blog"><img style="position:absolute;top:0;right:0;border:0" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">牧之</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://muyunyun.cn/posts/8a8c13a7/"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="牧云云"><meta itemprop="description" content=""><meta itemprop="image" content="/uploads/avatar.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="牧之"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">探寻 webpack 插件机制</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T00:32:27+08:00">2018-04-13 </time></span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/webpack/" itemprop="url" rel="index"><span itemprop="name">webpack</span> </a></span></span><span id="/posts/8a8c13a7/" class="leancloud_visitors" data-flag-title="探寻 webpack 插件机制"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="post-meta-item-text">热度 </span><span class="leancloud-visitors-count"></span> <span>℃</span></span><div class="post-wordcount"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i> </span><span class="post-meta-item-text">字数统计</span> <span title="字数统计">1,679 字 </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i> </span><span class="post-meta-item-text">阅读时长</span> <span title="阅读时长">7 分钟</span></div></div></header><div class="post-body" itemprop="articleBody"><p>webpack 可谓是让人欣喜又让人忧，功能强大但需要一定的学习成本。在探寻 webpack 插件机制前，首先需要了解一件有意思的事情，webpack 插件机制是整个 webpack 工具的骨架，而 webpack 本身也是利用这套插件机制构建出来的。因此在深入认识 webpack 插件机制后，再来进行项目的相关优化，想必会大有裨益。</p><h3 id="webpack-插件"><a href="#webpack-插件" class="headerlink" title="webpack 插件"></a>webpack 插件</h3><p>先来瞅瞅 webpack 插件在项目中的运用</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> MyPlugin = <span class="built_in">require</span>(<span class="string">'myplugin'</span>)</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>)</span><br><span class="line"></span><br><span class="line">webpack(&#123;</span><br><span class="line">  ...,</span><br><span class="line">  plugins: [<span class="keyword">new</span> MyPlugin()]</span><br><span class="line">  ...,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>那么符合什么样的条件能作为 webpack 插件呢？一般来说，webpack 插件有以下特点：</p><ol><li><p>独立的 JS 模块，暴露相应的函数</p></li><li><p>函数原型上的 apply 方法会注入 compiler 对象</p></li><li><p>compiler 对象上挂载了相应的 webpack 事件钩子</p></li><li><p>事件钩子的回调函数里能拿到编译后的 compilation 对象，如果是异步钩子还能拿到相应的 callback</p></li></ol><p>下面结合代码来看看：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyPlugin</span>(<span class="params">options</span>) </span>&#123;&#125;</span><br><span class="line"><span class="comment">// 2.函数原型上的 apply 方法会注入 compiler 对象</span></span><br><span class="line">MyPlugin.prototype.apply = <span class="function"><span class="keyword">function</span>(<span class="params">compiler</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 3.compiler 对象上挂载了相应的 webpack 事件钩子 4.事件钩子的回调函数里能拿到编译后的 compilation 对象</span></span><br><span class="line">  compiler.plugin(<span class="string">'emit'</span>, (compilation, callback) =&gt; &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 1.独立的 JS 模块，暴露相应的函数</span></span><br><span class="line"><span class="built_in">module</span>.exports = MyPlugin</span><br></pre></td></tr></table></figure><p>这样子，webpack 插件的基本轮廓就勾勒出来了，此时疑问点有几点，</p><ol><li>疑问 1：函数的原型上为什么要定义 apply 方法？阅读<a href="https://github.com/webpack/webpack/blob/10282ea20648b465caec6448849f24fc34e1ba3e/lib/webpack.js#L35" target="_blank" rel="noopener">源码</a>后发现源码中是通过 <code>plugin.apply()</code> 调用插件的。</li></ol><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> webpack = <span class="function">(<span class="params">options, callback</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> plugin <span class="keyword">of</span> options.plugins) &#123;</span><br><span class="line">    plugin.apply(compiler);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol start="2"><li><p>疑问 2：compiler 对象是什么呢？</p></li><li><p>疑问 3：compiler 对象上的事件钩子是怎样的？</p></li><li><p>疑问 4：事件钩子的回调函数里能拿到的 compilation 对象又是什么呢？</p></li></ol><p>这些疑问也是本文的线索，让我们一个个探索。</p><h3 id="compiler-对象"><a href="#compiler-对象" class="headerlink" title="compiler 对象"></a>compiler 对象</h3><p>compiler 即 webpack 的编辑器对象，在调用 webpack 时，会自动初始化 compiler 对象，<a href="https://github.com/webpack/webpack/blob/10282ea20648b465caec6448849f24fc34e1ba3e/lib/webpack.js#L30" target="_blank" rel="noopener">源码</a>如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack/lib/webpack.js</span></span><br><span class="line"><span class="keyword">const</span> Compiler = <span class="built_in">require</span>(<span class="string">"./Compiler"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> webpack = <span class="function">(<span class="params">options, callback</span>) =&gt;</span> &#123;</span><br><span class="line">  ...</span><br><span class="line">  options = <span class="keyword">new</span> WebpackOptionsDefaulter().process(options) <span class="comment">// 初始化 webpack 各配置参数</span></span><br><span class="line">  <span class="keyword">let</span> compiler = <span class="keyword">new</span> Compiler(options.context)             <span class="comment">// 初始化 compiler 对象，这里 options.context 为 process.cwd()</span></span><br><span class="line">  compiler.options = options                               <span class="comment">// 往 compiler 添加初始化参数</span></span><br><span class="line">  <span class="keyword">new</span> NodeEnvironmentPlugin().apply(compiler)              <span class="comment">// 往 compiler 添加 Node 环境相关方法</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> plugin <span class="keyword">of</span> options.plugins) &#123;</span><br><span class="line">    plugin.apply(compiler);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>终上，compiler 对象中包含了所有 webpack 可配置的内容，开发插件时，我们可以从 compiler 对象中拿到所有和 webpack 主环境相关的内容。</p><h3 id="compilation-对象"><a href="#compilation-对象" class="headerlink" title="compilation 对象"></a>compilation 对象</h3><p>compilation 对象代表了一次单一的版本构建和生成资源。当运行 webpack 时，每当检测到一个文件变化，一次新的编译将被创建，从而生成一组新的编译资源。一个编译对象表现了当前的模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态信息。</p><p>结合源码来理解下上面这段话，首先 webpack 在每次执行时会调用 <code>compiler.run()</code> <a href="https://github.com/webpack/webpack/blob/e7c8fa414b718ac98d94a96e2553faceabfbc92f/lib/webpack.js#L58" target="_blank" rel="noopener">(源码位置)</a>，接着追踪 <a href="https://github.com/webpack/webpack/blob/3a5fda909f2ecf911c73429cb4770948dbd31d24/lib/Compiler.js#L163" target="_blank" rel="noopener">onCompiled 函数</a>传入的 compilation 参数，可以发现 compilation 来自构造函数 Compilation。</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack/lib/Compiler.js</span></span><br><span class="line"><span class="keyword">const</span> Compilation = <span class="built_in">require</span>(<span class="string">"./Compilation"</span>);</span><br><span class="line"></span><br><span class="line">newCompilation(params) &#123;</span><br><span class="line">  <span class="keyword">const</span> compilation = <span class="keyword">new</span> Compilation(<span class="keyword">this</span>);</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">return</span> compilation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="不得不提的-tapable-库"><a href="#不得不提的-tapable-库" class="headerlink" title="不得不提的 tapable 库"></a>不得不提的 tapable 库</h3><p>再介绍完 compiler 对象和 compilation 对象后，不得不提的是 <a href="https://github.com/webpack/tapable" target="_blank" rel="noopener">tapable</a> 这个库，这个库暴露了所有和事件相关的 pub/sub 的方法。而且函数 <a href="https://github.com/webpack/webpack/blob/e7c8fa414b718ac98d94a96e2553faceabfbc92f/lib/Compiler.js#L29" target="_blank" rel="noopener">Compiler</a> 以及函数 <a href="https://github.com/webpack/webpack/blob/e7c8fa414b718ac98d94a96e2553faceabfbc92f/lib/Compilation.js#L98" target="_blank" rel="noopener">Compilation</a> 都继承自 Tapable。</p><h3 id="事件钩子"><a href="#事件钩子" class="headerlink" title="事件钩子"></a>事件钩子</h3><p>事件钩子其实就是类似 MVVM 框架的生命周期函数，在特定阶段能做特殊的逻辑处理。了解一些常见的事件钩子是写 webpack 插件的前置条件，下面列举些常见的事件钩子以及作用：</p><table><thead><tr><th style="text-align:center">钩子</th><th style="text-align:center">作用</th><th style="text-align:center">参数</th><th style="text-align:center">类型</th></tr></thead><tbody><tr><td style="text-align:center">after-plugins</td><td style="text-align:center">设置完一组初始化插件之后</td><td style="text-align:center">compiler</td><td style="text-align:center">sync</td></tr><tr><td style="text-align:center">after-resolvers</td><td style="text-align:center">设置完 resolvers 之后</td><td style="text-align:center">compiler</td><td style="text-align:center">sync</td></tr><tr><td style="text-align:center">run</td><td style="text-align:center">在读取记录之前</td><td style="text-align:center">compiler</td><td style="text-align:center">async</td></tr><tr><td style="text-align:center">compile</td><td style="text-align:center">在创建新 compilation 之前</td><td style="text-align:center">compilationParams</td><td style="text-align:center">sync</td></tr><tr><td style="text-align:center">compilation</td><td style="text-align:center">compilation 创建完成</td><td style="text-align:center">compilation</td><td style="text-align:center">sync</td></tr><tr><td style="text-align:center">emit</td><td style="text-align:center">在生成资源并输出到目录之前</td><td style="text-align:center">compilation</td><td style="text-align:center">async</td></tr><tr><td style="text-align:center">after-emit</td><td style="text-align:center">在生成资源并输出到目录之后</td><td style="text-align:center">compilation</td><td style="text-align:center">async</td></tr><tr><td style="text-align:center">done</td><td style="text-align:center">完成编译</td><td style="text-align:center">stats</td><td style="text-align:center">sync</td></tr></tbody></table><p>完整地请参阅<a href="https://doc.webpack-china.org/api/compiler/#%E4%BA%8B%E4%BB%B6%E9%92%A9%E5%AD%90" target="_blank" rel="noopener">官方文档手册</a>，同时浏览<a href="https://github.com/webpack/webpack/blob/eca7bad8de54c39b9cb8b138793362b8a17ac11b/lib/Compiler.js#L32" target="_blank" rel="noopener">相关源码</a> 也能比较清晰地看到各个事件钩子的定义。</p><h3 id="插件流程浅析"><a href="#插件流程浅析" class="headerlink" title="插件流程浅析"></a>插件流程浅析</h3><p>拿 emit 钩子为例，下面分析下插件调用源码：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compiler.plugin(<span class="string">'emit'</span>, (compilation, callback) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 在生成资源并输出到目录之前完成某些逻辑</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure><p>此处调用的 plugin 函数源自上文提到的 tapable 库，其最终调用栈指向了 hook.tapAsync()，其作用类似于 EventEmitter 的 on，<a href="https://github.com/webpack/tapable/blob/42b520760e138c23e7808881cb4322557e878307/lib/Tapable.js#L35" target="_blank" rel="noopener">源码</a>如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tapable.js</span></span><br><span class="line">options =&gt; &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">if</span>(hook !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> tapOpt = &#123;</span><br><span class="line">      name: options.fn.name || <span class="string">"unnamed compat plugin"</span>,</span><br><span class="line">      stage: options.stage || <span class="number">0</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">if</span>(options.async)</span><br><span class="line">      hook.tapAsync(tapOpt, options.fn); <span class="comment">// 将插件中异步钩子的回调函数注入</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      hook.tap(tapOpt, options.fn);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>有注入必有触发的地方，源码中通过 callAsync 方法触发之前注入的异步事件，callAsync 类似 EventEmitter 的 emit，<a href="https://github.com/webpack/webpack/blob/e7c8fa414b718ac98d94a96e2553faceabfbc92f/lib/Compiler.js#L307" target="_blank" rel="noopener">相关源码</a>如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.hooks.emit.callAsync(compilation, err =&gt; &#123;</span><br><span class="line">	<span class="keyword">if</span> (err) <span class="keyword">return</span> callback(err);</span><br><span class="line">	outputPath = compilation.getPath(<span class="keyword">this</span>.outputPath);</span><br><span class="line">	<span class="keyword">this</span>.outputFileSystem.mkdirp(outputPath, emitFiles);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><p>一些深入细节这里就不展开了，说下关于阅读比较大型项目的源码的两点体会，</p><ul><li><p>要抓住一条主线索去读，忽视细节。否则会浪费很多时间而且会有挫败感；</p></li><li><p>结合调试工具来分析，很多点不用调试工具的话很容易顾此失彼；</p></li></ul><h3 id="动手实现个-webpack-插件"><a href="#动手实现个-webpack-插件" class="headerlink" title="动手实现个 webpack 插件"></a>动手实现个 webpack 插件</h3><p>结合上述知识点的分析，不难写出自己的 webpack 插件，关键在于想法。为了统计项目中 webpack 各包的有效使用情况，在 fork <a href="https://github.com/chrisbateman/webpack-visualizer" target="_blank" rel="noopener">webpack-visualizer</a> 的基础上对代码升级了一番，<a href="https://github.com/MuYunyun/analyze-webpack-plugin" target="_blank" rel="noopener">项目地址</a>。效果如下：</p><p><img src="http://oqhtscus0.bkt.clouddn.com/329ec042a73aecd0a1947bdcc1f0dcb4.jpg-400" alt=""></p><p>插件核心代码正是基于上文提到的 emit 钩子，以及 compiler 和 compilation 对象。代码如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnalyzeWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(opts = &#123; filename: <span class="string">'analyze.html'</span> &#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.opts = opts</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  apply(compiler) &#123;</span><br><span class="line">    <span class="keyword">const</span> self = <span class="keyword">this</span></span><br><span class="line">    compiler.plugin(<span class="string">"emit"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">compilation, callback</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">let</span> stats = compilation.getStats().toJson(&#123; <span class="attr">chunkModules</span>: <span class="literal">true</span> &#125;) <span class="comment">// 获取各个模块的状态</span></span><br><span class="line">      <span class="keyword">let</span> stringifiedStats = <span class="built_in">JSON</span>.stringify(stats)</span><br><span class="line">      <span class="comment">// 服务端渲染</span></span><br><span class="line">      <span class="keyword">let</span> html = <span class="string">`&lt;!doctype html&gt;</span></span><br><span class="line"><span class="string">          &lt;meta charset="UTF-8"&gt;</span></span><br><span class="line"><span class="string">          &lt;title&gt;AnalyzeWebpackPlugin&lt;/title&gt;</span></span><br><span class="line"><span class="string">          &lt;style&gt;<span class="subst">$&#123;cssString&#125;</span>&lt;/style&gt;</span></span><br><span class="line"><span class="string">          &lt;div id="App"&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">          &lt;script&gt;window.stats = <span class="subst">$&#123;stringifiedStats&#125;</span>;&lt;/script&gt;</span></span><br><span class="line"><span class="string">          &lt;script&gt;<span class="subst">$&#123;jsString&#125;</span>&lt;/script&gt;</span></span><br><span class="line"><span class="string">      `</span></span><br><span class="line">      compilation.assets[<span class="string">`<span class="subst">$&#123;self.opts.filename&#125;</span>`</span>] = &#123; <span class="comment">// 生成文件路径</span></span><br><span class="line">        source: <span class="function"><span class="params">()</span> =&gt;</span> html,</span><br><span class="line">        size: <span class="function"><span class="params">()</span> =&gt;</span> html.length</span><br><span class="line">      &#125;</span><br><span class="line">      callback()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://zoumiaojiang.com/article/what-is-real-webpack-plugin/#compiler" target="_blank" rel="noopener">看清楚真正的 Webpack 插件</a></p><p><a href="https://doc.webpack-china.org/" target="_blank" rel="noopener">webpack 官网</a></p></div><div><div class="my_post_copyright"><script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script><script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script><script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script><link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css"><p><span>本文标题:</span><a href="/posts/8a8c13a7/">探寻 webpack 插件机制</a></p><p><span>文章作者:</span><a href="/" title="访问 牧云云 的个人博客">牧云云</a></p><p><span>发布时间:</span>2018年04月13日 - 00:04</p><p><span>最后更新:</span>2018年04月18日 - 16:04</p><p><span>原始链接:</span><a href="/posts/8a8c13a7/" title="探寻 webpack 插件机制">http://muyunyun.cn/posts/8a8c13a7/</a> <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://muyunyun.cn/posts/8a8c13a7/" aria-label="复制成功！"></i></span></p><p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p></div><script>var clipboard=new Clipboard(".fa-clipboard");clipboard.on("success",$(function(){$(".fa-clipboard").click(function(){swal({title:"",text:"复制成功",html:!1,timer:500,showConfirmButton:!1})})}))</script></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div></div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/pay.png" alt="Alipay/WeChat Pay"><p>支持微信/支付宝哟</p></div></div></div></div><div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/webpack/" rel="tag"># webpack</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/posts/b7045d95/" rel="next" title="JS 装饰器解析"><i class="fa fa-chevron-left"></i> JS 装饰器解析</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></article><div class="post-spread"><div class="jiathis_style"><a class="jiathis_button_tsina"></a> <a class="jiathis_button_tqq"></a> <a class="jiathis_button_weixin"></a> <a class="jiathis_button_cqq"></a> <a class="jiathis_button_douban"></a> <a class="jiathis_button_renren"></a> <a class="jiathis_button_qzone"></a> <a class="jiathis_button_kaixin001"></a> <a class="jiathis_button_copy"></a> <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a> <a class="jiathis_counter_style"></a></div><script type="text/javascript">var jiathis_config={hideMore:!1}</script><script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script></div></div></div><div class="comments" id="comments"><div id="container"></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/uploads/avatar.png" alt="牧云云"><p class="site-author-name" itemprop="name">牧云云</p><p class="site-description motion-element" itemprop="description">是云随风，倚码为诗</p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">17</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/index.html"><span class="site-state-item-count">14</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/index.html"><span class="site-state-item-count">26</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/atom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/MuYunyun" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i> GitHub </a></span><span class="links-of-author-item"><a href="mailto:muyy95@gmail.com" target="_blank" title="Mail"><i class="fa fa-fw fa-envelope-o"></i> Mail </a></span><span class="links-of-author-item"><a href="https://juejin.im/user/582becad2f301e0059426df2" target="_blank" title="掘金"><i class="fa fa-fw fa-diamond"></i> 掘金</a></span></div><div class="links-of-blogroll motion-element links-of-blogroll-inline"><div class="links-of-blogroll-title"><i class="fa fa-fw fa-globe"></i> Links</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><a href="http://muyunyun.cnblogs.com/" title="Old Blog" target="_blank">Old Blog</a></li></ul></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#webpack-插件"><span class="nav-number">1.</span> <span class="nav-text">webpack 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compiler-对象"><span class="nav-number">2.</span> <span class="nav-text">compiler 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compilation-对象"><span class="nav-number">3.</span> <span class="nav-text">compilation 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不得不提的-tapable-库"><span class="nav-number">4.</span> <span class="nav-text">不得不提的 tapable 库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件钩子"><span class="nav-number">5.</span> <span class="nav-text">事件钩子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件流程浅析"><span class="nav-number">6.</span> <span class="nav-text">插件流程浅析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动手实现个-webpack-插件"><span class="nav-number">7.</span> <span class="nav-text">动手实现个 webpack 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">牧云云</span></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv"><i class="fa fa-user"></i> 访问人数 <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> </span><span class="site-pv"><i class="fa fa-eye"></i> 总访问量 <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script><script type="text/javascript">// Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.json";
+    } else if (search_path.endsWith("json")) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });</script><script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script><script>AV.initialize("NE7X7YqaknlXAeG3kQJwF21s-gzGzoHsz","KCD3BFWVgJ93nul6Ls4mmUBI")</script><script>function showTime(e){var t=new AV.Query(e),c=[],u=$(".leancloud_visitors");u.each(function(){c.push($(this).attr("id").trim())}),t.containedIn("url",c),t.find().done(function(e){var t=".leancloud-visitors-count";if(0!==e.length){for(var n=0;n<e.length;n++){var o=e[n],i=o.get("url"),s=o.get("time"),r=document.getElementById(i);$(r).find(t).text(s)}for(n=0;n<c.length;n++){i=c[n],r=document.getElementById(i);var l=$(r).find(t);""==l.text()&&l.text(0)}}else u.find(t).text(0)}).fail(function(e,t){console.log("Error: "+t.code+" "+t.message)})}function addCount(i){var e=$(".leancloud_visitors"),s=e.attr("id").trim(),r=e.attr("data-flag-title").trim(),t=new AV.Query(i);t.equalTo("url",s),t.find({success:function(e){if(0<e.length){var t=e[0];t.fetchWhenSave(!0),t.increment("time"),t.save(null,{success:function(e){$(document.getElementById(s)).find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to save Visitor num, with error message: "+t.message)}})}else{var n=new i,o=new AV.ACL;o.setPublicReadAccess(!0),o.setPublicWriteAccess(!0),n.setACL(o),n.set("title",r),n.set("url",s),n.set("time",1),n.save(null,{success:function(e){$(document.getElementById(s)).find(".leancloud-visitors-count").text(e.get("time"))},error:function(e,t){console.log("Failed to create")}})}},error:function(e){console.log("Error:"+e.code+" "+e.message)}})}$(function(){var e=AV.Object.extend("Counter");1==$(".leancloud_visitors").length?addCount(e):1<$(".post-title-link").length&&showTime(e)})</script><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script type="text/javascript" src="/js/src/music/aplayer.js"></script><script type="text/javascript" src="/js/src/music/init.js"></script><link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css"><script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script><script>var gitment=new Gitment({id:window.location.pathname,owner:"MuYunyun",repo:"MuYunyun.github.io",oauth:{client_id:"f29b1fd73d2d4aee9abc",client_secret:"9bef686f836f34555372c7777dd41f02a6e0e8a1"},perPage:10});gitment.render("container")</script><div id="hexo-helper-live2d"><canvas id="live2dcanvas" width="150" height="300"></canvas></div><style>#live2dcanvas{position:fixed;width:150px;height:300px;opacity:10;left:0;z-index:999;pointer-events:none;bottom:-20px}</style><script type="text/javascript" src="/live2d/device.min.js"></script><script type="text/javascript">const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    var trElement = document.getElementById('hexo-helper-live2d');
+    trElement.parentNode.removeChild(trElement);
+    return;
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/tororo.model.json", 0.5);});
+})();</script></body></html>
