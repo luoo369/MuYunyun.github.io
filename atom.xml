@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://muyunyun.cn/"/>
-  <updated>2018-04-18T08:26:33.240Z</updated>
+  <updated>2018-05-18T06:18:54.502Z</updated>
   <id>http://muyunyun.cn/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JavaScript 中常见设计模式整理</title>
+    <link href="http://muyunyun.cn/posts/ed7c4af7/"/>
+    <id>http://muyunyun.cn/posts/ed7c4af7/</id>
+    <published>2018-05-17T16:06:43.000Z</published>
+    <updated>2018-05-18T06:18:54.502Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="http://oqhtscus0.bkt.clouddn.com/27217012b15ee9b788f2103ddbc30c30.jpg-muyy" alt=""></p><p>开发中，我们或多或少地接触了设计模式，但是很多时候不知道自己使用了哪种设计模式或者说该使用何种设计模式。本文意在梳理常见设计模式的特点，从而对它们有比较清晰的认知。</p><a id="more"></a><h3 id="JavaScript-中常见设计模式"><a href="#JavaScript-中常见设计模式" class="headerlink" title="JavaScript 中常见设计模式"></a>JavaScript 中常见设计模式</h3><ul><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.md" target="_blank" rel="noopener">单例模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/策略模式.md" target="_blank" rel="noopener">策略模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/代理模式.md" target="_blank" rel="noopener">代理模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/迭代器模式.md" target="_blank" rel="noopener">迭代器模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/发布订阅模式.md" target="_blank" rel="noopener">发布-订阅模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/命令模式.md" target="_blank" rel="noopener">命令模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/组合模式.md" target="_blank" rel="noopener">组合模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/模板方法模式.md" target="_blank" rel="noopener">模板方法模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/享元模式.md" target="_blank" rel="noopener">享元模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/职责链模式.md" target="_blank" rel="noopener">职责链模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/中介者模式.md" target="_blank" rel="noopener">中介者模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/装饰者模式.md" target="_blank" rel="noopener">装饰者模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/状态模式.md" target="_blank" rel="noopener">状态模式</a></li><li><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/适配者模式.md" target="_blank" rel="noopener">适配者模式</a></li></ul><h3 id="各设计模式关键词"><a href="#各设计模式关键词" class="headerlink" title="各设计模式关键词"></a>各设计模式关键词</h3><p>看完了上述设计模式后，把它们的关键词特点罗列出来，以后提到某种设计模式，进而联想相应的关键词和例子，从而心中有数。</p><table><thead><tr><th style="text-align:center">设计模式</th><th style="text-align:center">特点</th><th style="text-align:center">案例</th></tr></thead><tbody><tr><td style="text-align:center">单例模式</td><td style="text-align:center">一个类只能构造出唯一实例</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.md" target="_blank" rel="noopener">创建菜单对象</a></td></tr><tr><td style="text-align:center">策略模式</td><td style="text-align:center">根据不同参数可以命中不同的策略</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/策略模式.md" target="_blank" rel="noopener">动画库里的算法函数</a></td></tr><tr><td style="text-align:center">代理模式</td><td style="text-align:center">代理对象和本体对象具有一致的接口</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/代理模式.md" target="_blank" rel="noopener">图片预加载</a></td></tr><tr><td style="text-align:center">迭代器模式</td><td style="text-align:center">能获取聚合对象的顺序和元素</td><td style="text-align:center"><code>each([1, 2, 3], cb)</code></td></tr><tr><td style="text-align:center">发布-订阅模式</td><td style="text-align:center">PubSub</td><td style="text-align:center"><a href="https://github.com/MuYunyun/waterfall/blob/0f229c1a2881d26166b92aa746b7f892af59c28f/waterfall.js#L8" target="_blank" rel="noopener">瀑布流库</a></td></tr><tr><td style="text-align:center">命令模式</td><td style="text-align:center">不同对象间约定好相应的接口</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/命令模式.md" target="_blank" rel="noopener">按钮和命令的分离</a></td></tr><tr><td style="text-align:center">组合模式</td><td style="text-align:center">组合模式在对象间形成一致对待的树形结构</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/命令模式.md" target="_blank" rel="noopener">扫描文件夹</a></td></tr><tr><td style="text-align:center">模板方法模式</td><td style="text-align:center">父类中定好执行顺序</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/模板方法模式.md" target="_blank" rel="noopener">咖啡和茶</a></td></tr><tr><td style="text-align:center">享元模式</td><td style="text-align:center">减少创建实例的个数</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/享元模式.md" target="_blank" rel="noopener">男女模具试装</a></td></tr><tr><td style="text-align:center">职责链模式</td><td style="text-align:center">通过请求第一个条件，会持续执行后续的条件，直到返回结果为止</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/职责链模式.md" target="_blank" rel="noopener">if else 优化</a></td></tr><tr><td style="text-align:center">中介者模式</td><td style="text-align:center">对象和对象之间借助第三方中介者进行通信</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/中介者模式.md" target="_blank" rel="noopener">测试结束告知结果</a></td></tr><tr><td style="text-align:center">装饰者模式</td><td style="text-align:center">动态地给函数赋能</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/装饰者模式.md" target="_blank" rel="noopener">天冷了穿衣服，热了脱衣服</a></td></tr><tr><td style="text-align:center">状态模式</td><td style="text-align:center">每个状态建立一个类，状态改变会产生不同行为</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/状态模式.md" target="_blank" rel="noopener">电灯换挡</a></td></tr><tr><td style="text-align:center">适配者模式</td><td style="text-align:center">一种数据结构改成另一种数据结构</td><td style="text-align:center"><a href="https://github.com/MuYunyun/blog/blob/master/Basic%20Skill/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/适配者模式.md" target="_blank" rel="noopener">枚举值接口变更</a></td></tr></tbody></table><h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>*《JavaScript设计模式与开发实践》</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;http://oqhtscus0.bkt.clouddn.com/27217012b15ee9b788f2103ddbc30c30.jpg-muyy&quot; alt=&quot;&quot;&gt;&lt;/p&gt;&lt;p&gt;开发中，我们或多或少地接触了设计模式，但是很多时候不知道自己使用了哪种设计模式或者说该使用何种设计模式。本文意在梳理常见设计模式的特点，从而对它们有比较清晰的认知。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="设计模式" scheme="http://muyunyun.cn/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+      <category term="设计模式" scheme="http://muyunyun.cn/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>探寻 webpack 插件机制</title>
@@ -390,9 +412,9 @@
       <category term="JavaScript" scheme="http://muyunyun.cn/categories/JavaScript/"/>
     
     
-      <category term="JavaScript" scheme="http://muyunyun.cn/tags/JavaScript/"/>
-    
       <category term="读书笔记" scheme="http://muyunyun.cn/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="JavaScript" scheme="http://muyunyun.cn/tags/JavaScript/"/>
     
   </entry>
   

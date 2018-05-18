@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://muyunyun.cn/posts/ed7c4af7/</loc>
+    <lastmod>2018-05-18T06:18:54.502Z</lastmod>
+    <data>
+        <display>
+        <title>JavaScript 中常见设计模式整理</title>
+        <pubTime>2018-05-17T16:06:43.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+             
+              <breadCrumb title="设计模式" url="http://muyunyun.cn/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://muyunyun.cn/posts/8a8c13a7/</loc>
     <lastmod>2018-04-18T08:26:33.240Z</lastmod>
     <data>
@@ -31,9 +51,9 @@
         <title>读书笔记-你不知道的 JavaScript (上)</title>
         <pubTime>2017-06-06T14:15:01.000Z</pubTime>
         
-        <tag>JavaScript</tag>
-         
         <tag>读书笔记</tag>
+         
+        <tag>JavaScript</tag>
          
          
            
